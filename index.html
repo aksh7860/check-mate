@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Checkmate ❤️</title>
 
 <style>
@@ -13,10 +13,9 @@ body {
   font-family: "Segoe UI", system-ui, sans-serif;
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   color: white;
-  overflow-x: hidden;
 }
 
-/* ---------- MAIN ---------- */
+/* ================= MAIN ================= */
 #mainContent {
   min-height: 100vh;
   display: flex;
@@ -40,16 +39,17 @@ body {
   margin: 20px 0;
 }
 
-/* ---------- LOGIN ---------- */
+/* ================= LOGIN ================= */
 input {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border-radius: 10px;
   border: none;
-  margin: 6px 0 14px;
+  margin: 8px 0 14px;
+  font-size: 16px;
 }
 
-/* ---------- CHESS ---------- */
+/* ================= CHESS ================= */
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -79,7 +79,7 @@ input {
 
 .allowed { border: 3px solid #ff4d6d; }
 
-/* ---------- BUTTONS ---------- */
+/* ================= BUTTONS ================= */
 .buttons { position: relative; height: 120px; }
 
 button {
@@ -106,7 +106,7 @@ button {
   transition: opacity 0.3s ease;
 }
 
-/* ---------- CHECKMATE ---------- */
+/* ================= CHECKMATE ================= */
 #checkmateOverlay {
   position: fixed;
   inset: 0;
@@ -116,23 +116,27 @@ button {
   justify-content: center;
   font-size: 64px;
   opacity: 0;
-  pointer-events: none;
+  pointer-events: none; /* 🔑 FIX */
   transition: opacity 0.5s ease;
   z-index: 50;
 }
 
 #checkmateOverlay.show { opacity: 1; }
 
-/* ---------- JAPAN SCENE ---------- */
+/* ================= JAPAN SCENE ================= */
 #japanScene {
   position: fixed;
   inset: 0;
   opacity: 0;
   transition: opacity 2s ease;
   z-index: 40;
+  pointer-events: none; /* 🔑 FIX */
 }
 
-#japanScene.show { opacity: 1; }
+#japanScene.show {
+  opacity: 1;
+  pointer-events: auto;
+}
 
 #japanScene video {
   width: 100%;
@@ -177,18 +181,18 @@ button {
 <div id="mainContent">
 <div class="container">
 
-<!-- LOCK -->
+<!-- LOCK SCREEN -->
 <div id="lockScreen" class="card">
   <h2>🔐 Just one last thing…</h2>
 
   <label>What is the name I call you by?</label>
-  <input id="q1">
+  <input id="q1" autocomplete="off" />
 
   <label>My date of birth (day only)</label>
-  <input id="q2">
+  <input id="q2" autocomplete="off" />
 
   <label>What is my dream destination?</label>
-  <input id="q3">
+  <input id="q3" autocomplete="off" />
 
   <button onclick="unlock()" style="background:#ff4d6d;color:white;width:100%">
     Unlock 💖
@@ -196,7 +200,7 @@ button {
   <p id="error"></p>
 </div>
 
-<!-- PROTECTED -->
+<!-- PROTECTED CONTENT -->
 <div id="protectedContent" style="display:none;">
 
 <h1>Choose your opening move ♟️</h1>
@@ -254,7 +258,7 @@ button {
 </div>
 </div>
 
-<!-- JAPAN -->
+<!-- JAPAN SCENE -->
 <div id="japanScene">
 <video autoplay muted loop playsinline>
   <source src="japan.mp4" type="video/mp4">
@@ -279,46 +283,43 @@ function unlock() {
     q2.value === answers.q2 &&
     q3.value.toLowerCase() === answers.q3
   ) {
-    lockScreen.style.display="none";
-    protectedContent.style.display="block";
+    lockScreen.style.display = "none";
+    protectedContent.style.display = "block";
   } else {
-    error.textContent="Hmm… try again 😌";
+    error.textContent = "Hmm… try again 😌";
   }
 }
 
-document.querySelectorAll(".square").forEach(sq=>{
-  sq.onclick=()=>{
-    if(!sq.classList.contains("allowed")){
-      chessMsg.textContent="Some moves are meant to be saved… just like us ♟️";
+document.querySelectorAll(".square").forEach(sq => {
+  sq.onclick = () => {
+    if (!sq.classList.contains("allowed")) {
+      chessMsg.textContent = "Some moves are meant to be saved… just like us ♟️";
     } else {
-      chessMsg.textContent="Perfect opening — just like you 😉";
+      chessMsg.textContent = "Perfect opening — just like you 😉";
     }
   };
 });
 
-noBtn.onmouseenter=()=>{
-  noText.style.opacity=1;
-  noBtn.style.transform=`translate(${Math.random()*200-100}px,0)`;
+noBtn.onmouseenter = () => {
+  noText.style.opacity = 1;
+  noBtn.style.transform = `translate(${Math.random()*200-100}px,0)`;
 };
 
-yesBtn.onclick=()=>{
+yesBtn.onclick = () => {
   noBtn.remove();
   noText.remove();
   valentineMusic.play();
+
   checkmateOverlay.classList.add("show");
 
-  setTimeout(()=>{
+  setTimeout(() => {
     checkmateOverlay.classList.remove("show");
     mainContent.classList.add("fadeOut");
 
-    setTimeout(()=>{
-      mainContent.style.display="none";
+    setTimeout(() => {
+      mainContent.style.display = "none";
       japanScene.classList.add("show");
-      setTimeout(()=>finalLine.style.opacity=1,1500);
-    },1200);
-  },1200);
-};
-</script>
+      setTimeout(() => finalLine.style.opacity = 1, 1500);
+    }, 1200);
+  }, 1200);
 
-</body>
-</html>

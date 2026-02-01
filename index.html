@@ -1,162 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Our Little Checkmate ❤️</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Little Checkmate ❤️</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow-x: hidden;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+}
 
-    .container {
-      max-width: 900px;
-      padding: 24px;
-      text-align: center;
-    }
+.container { max-width: 900px; padding: 24px; text-align: center; }
 
-    .card {
-      background: rgba(255,255,255,0.08);
-      border-radius: 20px;
-      padding: 24px;
-      margin: 20px 0;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    }
+.card {
+  background: rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 24px;
+  margin: 20px 0;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
 
-    /* LOCK SCREEN */
-    input {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-      margin: 6px 0 16px;
-    }
+/* LOCK SCREEN */
+input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  margin: 6px 0 16px;
+}
 
-    button {
-      padding: 14px 28px;
-      font-size: 18px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-    }
+button {
+  padding: 14px 28px;
+  font-size: 18px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+}
 
-    /* CHESS MINI */
-    .board {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      max-width: 320px;
-      margin: 20px auto;
-    }
+/* CHESS MINI */
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  max-width: 320px;
+  margin: 20px auto;
+}
 
-    .square {
-      aspect-ratio: 1/1;
-      background: #f5f5f5;
-      color: #222;
-      border-radius: 12px;
-      font-size: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+.square {
+  aspect-ratio: 1/1;
+  background: #f5f5f5;
+  color: #222;
+  border-radius: 12px;
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.square:hover { transform: scale(1.05); background: #ffdde1; }
+.revealed { background: #ffb6c1; }
 
-    .square:hover { transform: scale(1.05); background: #ffdde1; }
-    .revealed { background: #ffb6c1; }
+/* BUTTONS */
+.buttons { position: relative; height: 120px; margin-top: 20px; }
+#yesBtn { background: #ff4d6d; color: #fff; }
+#noBtn {
+  position: absolute;
+  background: #555;
+  color: #fff;
+  left: 50%;
+  top: 60px;
+}
 
-    /* BUTTONS */
-    .buttons {
-      position: relative;
-      height: 120px;
-      margin-top: 20px;
-    }
+#noText {
+  margin-top: 12px;
+  opacity: 0;
+  font-size:16px;
+  transition: opacity 0.3s;
+}
 
-    #yesBtn { background: #ff4d6d; color: #fff; }
-    #noBtn {
-      position: absolute;
-      background: #555;
-      color: #fff;
-      left: 50%;
-      top: 60px;
-    }
+/* GALLERY */
+.gallery {
+  display: none;
+  margin-top: 20px;
+  animation: pop 0.6s ease;
+}
 
-    #noText {
-      margin-top: 12px;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
+.photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+  gap: 12px;
+  margin-top:16px;
+}
 
-    /* GALLERY */
-    .gallery {
-      display: none;
-      margin-top: 20px;
-      animation: pop 0.6s ease;
-    }
+.photos img {
+  width:100%;
+  border-radius:16px;
+}
 
-    .photos {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px;
-      margin-top: 16px;
-    }
+@keyframes pop {
+  from { transform: scale(0.9); opacity:0; }
+  to { transform: scale(1); opacity:1; }
+}
 
-    .photos img {
-      width: 100%;
-      border-radius: 16px;
-    }
+/* CHECKMATE OVERLAY */
+#checkmateOverlay {
+  position: fixed;
+  inset:0;
+  background: rgba(0,0,0,0.6);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition: opacity 0.4s ease;
+  z-index:999;
+}
 
-    @keyframes pop {
-      from { transform: scale(0.9); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
+#checkmateOverlay.show { opacity:1; }
 
-    /* CHECKMATE OVERLAY */
-    #checkmateOverlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-      z-index: 999;
-    }
+#checkmateText {
+  font-size:48px;
+  font-weight:bold;
+  letter-spacing:2px;
+  transform: scale(0.6);
+  opacity:0;
+}
 
-    #checkmateOverlay.show { opacity: 1; }
+#checkmateOverlay.show #checkmateText {
+  animation: checkmatePop 1.2s ease forwards;
+}
 
-    #checkmateText {
-      font-size: 48px;
-      font-weight: bold;
-      letter-spacing: 2px;
-      transform: scale(0.6);
-      opacity: 0;
-    }
+@keyframes checkmatePop {
+  0% { transform: scale(0.6); opacity:0; }
+  50% { transform: scale(1.15); opacity:1; }
+  100% { transform: scale(1); opacity:1; }
+}
 
-    #checkmateOverlay.show #checkmateText {
-      animation: checkmatePop 1.2s ease forwards;
-    }
-
-    @keyframes checkmatePop {
-      0% { transform: scale(0.6); opacity: 0; }
-      50% { transform: scale(1.15); opacity: 1; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-  </style>
+</style>
 </head>
-
 <body>
+
 <div class="container">
 
   <!-- LOCK SCREEN -->
@@ -221,33 +213,55 @@
 </div>
 
 <script>
-  // Chess messages
-  document.querySelectorAll('.square').forEach(sq => {
+  // Elements
+  const q1 = document.getElementById('q1');
+  const q2 = document.getElementById('q2');
+  const q3 = document.getElementById('q3');
+  const lockScreen = document.getElementById('lockScreen');
+  const mainContent = document.getElementById('mainContent');
+  const error = document.getElementById('error');
+
+  const chessMessage = document.getElementById('chessMessage');
+  const squares = document.querySelectorAll('.square');
+
+  const noBtn = document.getElementById('noBtn');
+  const noText = document.getElementById('noText');
+  const yesBtn = document.getElementById('yesBtn');
+  const gallery = document.getElementById('gallery');
+  const checkmateOverlay = document.getElementById('checkmateOverlay');
+
+  // Chess click
+  squares.forEach(sq => {
     sq.onclick = () => {
-      document.querySelectorAll('.square').forEach(s => s.classList.remove('revealed'));
+      squares.forEach(s => s.classList.remove('revealed'));
       sq.classList.add('revealed');
       chessMessage.textContent = sq.dataset.msg;
     };
   });
 
-  // No button escape
-  noBtn.onmouseenter = () => {
+  // No button hover
+  noBtn.addEventListener('mouseenter', () => {
     noBtn.style.transform = `translate(${Math.random()*200-100}px,${Math.random()*60-30}px)`;
     noText.style.opacity = 1;
-  };
+  });
 
-  // Yes button with CHECKMATE animation
+  noBtn.addEventListener('mouseleave', () => {
+    // optional: hide text again
+    // noText.style.opacity = 0;
+  });
+
+  // Yes button click
   yesBtn.onclick = () => {
     checkmateOverlay.classList.add('show');
-
     setTimeout(() => {
       checkmateOverlay.classList.remove('show');
       gallery.style.display = 'block';
-      gallery.scrollIntoView({ behavior: 'smooth' });
+      gallery.scrollIntoView({behavior:'smooth'});
+      noText.style.opacity = 1;
     }, 1800);
   };
 
-  // ANSWERS
+  // Login answers
   const answers = {
     q1: "bunny",
     q2: "28",
@@ -255,17 +269,16 @@
   };
 
   function unlock() {
-    if (
-      q1.value.trim().toLowerCase() === answers.q1 &&
-      q2.value.trim() === answers.q2 &&
-      q3.value.trim().toLowerCase() === answers.q3
-    ) {
+    if(q1.value.trim().toLowerCase() === answers.q1 &&
+       q2.value.trim() === answers.q2 &&
+       q3.value.trim().toLowerCase() === answers.q3) {
       lockScreen.style.display = "none";
       mainContent.style.display = "block";
     } else {
       error.textContent = "Hmm… that doesn’t feel right 😌";
     }
   }
+
 </script>
 
 </body>

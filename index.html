@@ -303,29 +303,46 @@ function unlock() {
   }
 }
 
-/* ---------- CHESS ---------- */
+/* ---------- CHESS LOGIC ---------- */
+let openingPlayed = false;
+
 document.querySelectorAll(".square").forEach(square => {
   square.addEventListener("click", () => {
 
+    // visual selection
     document.querySelectorAll(".square")
       .forEach(s => s.classList.remove("active"));
-
     square.classList.add("active");
 
     chessMsg.classList.remove("show");
     chessMsg.textContent = "";
 
     setTimeout(() => {
-      if (!square.classList.contains("allowed")) {
-        chessMsg.textContent =
-          "Are you sure? In chess, this isn’t how openings begin ♟️";
-      } else {
+
+      // BEFORE OPENING MOVE
+      if (!openingPlayed) {
+        if (square.classList.contains("allowed")) {
+          openingPlayed = true;
+          chessMsg.textContent =
+            square.dataset.msg +
+            " — and just like that, everything opens up ♟️💖";
+        } else {
+          chessMsg.textContent =
+            "Are you sure? In chess, this isn’t how openings begin ♟️";
+        }
+      }
+
+      // AFTER OPENING MOVE
+      else {
         chessMsg.textContent = square.dataset.msg;
       }
+
       chessMsg.classList.add("show");
+
     }, 120);
   });
 });
+
 
 /* ---------- NO BUTTON ---------- */
 noBtn.addEventListener("mouseenter", () => {

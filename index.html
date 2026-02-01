@@ -15,10 +15,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow-x: hidden;
 }
 
-.container { max-width: 900px; padding: 24px; text-align: center; }
+.container {
+  max-width: 900px;
+  padding: 24px;
+  text-align: center;
+}
 
 .card {
   background: rgba(255,255,255,0.08);
@@ -28,7 +31,7 @@ body {
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 
-/* LOCK SCREEN */
+/* INPUTS */
 input {
   width: 100%;
   padding: 10px;
@@ -37,6 +40,7 @@ input {
   margin: 6px 0 16px;
 }
 
+/* BUTTONS */
 button {
   padding: 14px 28px;
   font-size: 18px;
@@ -45,12 +49,21 @@ button {
   cursor: pointer;
 }
 
-/* CHESS MINI */
+#yesBtn { background: #ff4d6d; color: #fff; }
+#noBtn {
+  position: absolute;
+  background: #555;
+  color: #fff;
+  left: 50%;
+  top: 60px;
+}
+
+/* CHESS */
 .board {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
-  max-width: 320px;
+  max-width: 300px;
   margin: 20px auto;
 }
 
@@ -66,31 +79,27 @@ button {
   cursor: pointer;
   transition: 0.2s;
 }
+
 .square:hover { transform: scale(1.05); background: #ffdde1; }
 .revealed { background: #ffb6c1; }
 
-/* BUTTONS */
-.buttons { position: relative; height: 120px; margin-top: 20px; }
-#yesBtn { background: #ff4d6d; color: #fff; }
-#noBtn {
-  position: absolute;
-  background: #555;
-  color: #fff;
-  left: 50%;
-  top: 60px;
+/* YES / NO AREA */
+.buttons {
+  position: relative;
+  height: 120px;
+  margin-top: 20px;
 }
 
 #noText {
   margin-top: 12px;
   opacity: 0;
-  font-size:16px;
-  transition: opacity 0.3s;
+  font-size: 16px;
+  transition: opacity 0.3s ease;
 }
 
 /* GALLERY */
 .gallery {
   display: none;
-  margin-top: 20px;
   animation: pop 0.6s ease;
 }
 
@@ -98,41 +107,41 @@ button {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
   gap: 12px;
-  margin-top:16px;
+  margin-top: 16px;
 }
 
 .photos img {
-  width:100%;
-  border-radius:16px;
+  width: 100%;
+  border-radius: 16px;
 }
 
 @keyframes pop {
-  from { transform: scale(0.9); opacity:0; }
-  to { transform: scale(1); opacity:1; }
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 
 /* CHECKMATE OVERLAY */
 #checkmateOverlay {
   position: fixed;
-  inset:0;
+  inset: 0;
   background: rgba(0,0,0,0.6);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  pointer-events:none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
   transition: opacity 0.4s ease;
-  z-index:999;
+  z-index: 999;
 }
 
-#checkmateOverlay.show { opacity:1; }
+#checkmateOverlay.show { opacity: 1; }
 
 #checkmateText {
-  font-size:48px;
-  font-weight:bold;
-  letter-spacing:2px;
+  font-size: 48px;
+  font-weight: bold;
+  letter-spacing: 2px;
   transform: scale(0.6);
-  opacity:0;
+  opacity: 0;
 }
 
 #checkmateOverlay.show #checkmateText {
@@ -140,71 +149,78 @@ button {
 }
 
 @keyframes checkmatePop {
-  0% { transform: scale(0.6); opacity:0; }
-  50% { transform: scale(1.15); opacity:1; }
-  100% { transform: scale(1); opacity:1; }
+  0% { transform: scale(0.6); opacity: 0; }
+  50% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
 }
-
 </style>
 </head>
+
 <body>
+
+<!-- MUSIC -->
+<audio id="valentineMusic" src="ekdin.mp3" preload="auto" loop></audio>
 
 <div class="container">
 
-  <!-- LOCK SCREEN -->
-  <div id="lockScreen" class="card" style="max-width:500px;margin:auto;">
-    <h2>🔐 Little Lock Before You Enter</h2>
+<!-- LOCK SCREEN -->
+<div id="lockScreen" class="card" style="max-width:500px;margin:auto;">
+  <h2>🔐 Little Lock Before You Enter</h2>
 
-    <label>1. What is the name I call you by?</label>
-    <input id="q1" />
+  <label>1. What is the name I call you by?</label>
+  <input id="q1">
 
-    <label>2. The day of the month I was born on?</label>
-    <input id="q2" />
+  <label>2. The day of the month I was born on?</label>
+  <input id="q2">
 
-    <label>3. What is my dream destination?</label>
-    <input id="q3" />
+  <label>3. What is my dream destination?</label>
+  <input id="q3">
 
-    <button onclick="unlock()" style="background:#ff4d6d;color:#fff;width:100%;">Unlock 💘</button>
-    <p id="error" style="color:#ffb6c1;"></p>
+  <button onclick="unlock()" style="background:#ff4d6d;color:#fff;width:100%;">
+    Unlock 💘
+  </button>
+  <p id="error" style="color:#ffb6c1;"></p>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="mainContent" style="display:none;">
+
+  <h1>Hey You ♟️❤️</h1>
+  <p>I made this tiny corner of the internet just for us.</p>
+
+  <div class="card">
+    <h2>A tiny chess game</h2>
+    <div class="board">
+      <div class="square" data-msg="You’re my favorite opening">♜</div>
+      <div class="square" data-msg="You make every move exciting">♞</div>
+      <div class="square" data-msg="Life with you feels like a win">♝</div>
+      <div class="square" data-msg="Checkmate, you have my heart">♛</div>
+      <div class="square" data-msg="Smart, calm, beautiful">♚</div>
+      <div class="square" data-msg="Every game is better together">♟️</div>
+    </div>
+    <p id="chessMessage"></p>
   </div>
 
-  <!-- MAIN CONTENT -->
-  <div id="mainContent" style="display:none;">
-
-    <h1>Hey You ♟️❤️</h1>
-    <p>I made this tiny corner of the internet just for us.</p>
-
-    <div class="card">
-      <h2>A tiny chess game</h2>
-      <div class="board">
-        <div class="square" data-msg="You’re my favorite opening">♜</div>
-        <div class="square" data-msg="Checkmate, you have my heart">♛</div>
-        <div class="square" data-msg="Every move is better with you">♞</div>
-        <div class="square" data-msg="Forever my best move">♚</div>
-      </div>
-      <p id="chessMessage"></p>
+  <div class="card">
+    <h2>Will you be my Valentine? 💘</h2>
+    <div class="buttons">
+      <button id="yesBtn">Yes 💖</button>
+      <button id="noBtn">No 🙈</button>
     </div>
-
-    <div class="card">
-      <h2>Will you be my Valentine? 💘</h2>
-      <div class="buttons">
-        <button id="yesBtn">Yes 💖</button>
-        <button id="noBtn">No 🙈</button>
-      </div>
-      <p id="noText">Checkmate ♛</p>
-    </div>
-
-    <div class="card gallery" id="gallery">
-      <h2>YAYYYY!!! 🎉🥰</h2>
-      <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" width="200" />
-      <div class="photos">
-        <img src="https://placekitten.com/300/300">
-        <img src="https://placekitten.com/301/300">
-        <img src="https://placekitten.com/302/300">
-      </div>
-    </div>
-
+    <p id="noText">Who are imposter, my Bunny won't choose this</p>
   </div>
+
+  <div class="card gallery" id="gallery">
+    <h2>YAYYYY!!! 🎉🥰</h2>
+    <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" width="200">
+    <div class="photos">
+      <img src="https://placekitten.com/300/300">
+      <img src="https://placekitten.com/301/300">
+      <img src="https://placekitten.com/302/300">
+    </div>
+  </div>
+
+</div>
 </div>
 
 <!-- CHECKMATE OVERLAY -->
@@ -213,72 +229,55 @@ button {
 </div>
 
 <script>
-  // Elements
-  const q1 = document.getElementById('q1');
-  const q2 = document.getElementById('q2');
-  const q3 = document.getElementById('q3');
-  const lockScreen = document.getElementById('lockScreen');
-  const mainContent = document.getElementById('mainContent');
-  const error = document.getElementById('error');
+const answers = { q1: "bunny", q2: "28", q3: "prague" };
 
-  const chessMessage = document.getElementById('chessMessage');
-  const squares = document.querySelectorAll('.square');
-
-  const noBtn = document.getElementById('noBtn');
-  const noText = document.getElementById('noText');
-  const yesBtn = document.getElementById('yesBtn');
-  const gallery = document.getElementById('gallery');
-  const checkmateOverlay = document.getElementById('checkmateOverlay');
-
-  // Chess click
-  squares.forEach(sq => {
-    sq.onclick = () => {
-      squares.forEach(s => s.classList.remove('revealed'));
-      sq.classList.add('revealed');
-      chessMessage.textContent = sq.dataset.msg;
-    };
-  });
-
-  // No button hover
-  noBtn.addEventListener('mouseenter', () => {
-    noBtn.style.transform = `translate(${Math.random()*200-100}px,${Math.random()*60-30}px)`;
-    noText.style.opacity = 1;
-  });
-
-  noBtn.addEventListener('mouseleave', () => {
-    // optional: hide text again
-    // noText.style.opacity = 0;
-  });
-
-  // Yes button click
-  yesBtn.onclick = () => {
-    checkmateOverlay.classList.add('show');
-    setTimeout(() => {
-      checkmateOverlay.classList.remove('show');
-      gallery.style.display = 'block';
-      gallery.scrollIntoView({behavior:'smooth'});
-      noText.style.opacity = 1;
-    }, 1800);
-  };
-
-  // Login answers
-  const answers = {
-    q1: "bunny",
-    q2: "28",
-    q3: "prague"
-  };
-
-  function unlock() {
-    if(q1.value.trim().toLowerCase() === answers.q1 &&
-       q2.value.trim() === answers.q2 &&
-       q3.value.trim().toLowerCase() === answers.q3) {
-      lockScreen.style.display = "none";
-      mainContent.style.display = "block";
-    } else {
-      error.textContent = "Hmm… that doesn’t feel right 😌";
-    }
+function unlock() {
+  if (
+    q1.value.trim().toLowerCase() === answers.q1 &&
+    q2.value.trim() === answers.q2 &&
+    q3.value.trim().toLowerCase() === answers.q3
+  ) {
+    lockScreen.style.display = "none";
+    mainContent.style.display = "block";
+  } else {
+    error.textContent = "Hmm… that doesn’t feel right 😌";
   }
+}
 
+// Chess logic
+let firstMove = true;
+document.querySelectorAll('.square').forEach(sq => {
+  sq.onclick = () => {
+    const piece = sq.textContent.trim();
+    if (firstMove && piece !== '♞' && piece !== '♟️') {
+      chessMessage.textContent =
+        "Are you sure in chess you can do that as opening move?";
+      return;
+    }
+    document.querySelectorAll('.square').forEach(s => s.classList.remove('revealed'));
+    sq.classList.add('revealed');
+    chessMessage.textContent = sq.dataset.msg;
+    firstMove = false;
+  };
+});
+
+// No button
+noBtn.onmouseenter = () => {
+  noBtn.style.transform =
+    `translate(${Math.random()*200-100}px,${Math.random()*60-30}px)`;
+  noText.style.opacity = 1;
+};
+
+// Yes button
+yesBtn.onclick = () => {
+  valentineMusic.play();
+  checkmateOverlay.classList.add('show');
+  setTimeout(() => {
+    checkmateOverlay.classList.remove('show');
+    gallery.style.display = 'block';
+    gallery.scrollIntoView({ behavior: 'smooth' });
+  }, 1800);
+};
 </script>
 
 </body>

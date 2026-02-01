@@ -59,25 +59,38 @@ input {
 }
 
 .square {
-  padding: 16px;
+  padding: 18px;
   border-radius: 16px;
   background: #f5f5f5;
   color: #222;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, outline 0.2s ease;
 }
 
 .square:hover { transform: scale(1.05); }
 
-.piece { font-size: 36px; }
-
-.pieceText {
-  font-size: 13px;
-  margin-top: 6px;
-  opacity: 0.85;
+.square.active {
+  outline: 3px solid #ff4d6d;
+  transform: scale(1.08);
 }
 
+.piece { font-size: 36px; }
+
 .allowed { border: 3px solid #ff4d6d; }
+
+#chessMsg {
+  min-height: 32px;
+  margin-top: 14px;
+  font-size: 16px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+#chessMsg.show {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 /* ================= BUTTONS ================= */
 .buttons { position: relative; height: 120px; }
@@ -116,7 +129,7 @@ button {
   justify-content: center;
   font-size: 64px;
   opacity: 0;
-  pointer-events: none; /* 🔑 FIX */
+  pointer-events: none;
   transition: opacity 0.5s ease;
   z-index: 50;
 }
@@ -130,7 +143,7 @@ button {
   opacity: 0;
   transition: opacity 2s ease;
   z-index: 40;
-  pointer-events: none; /* 🔑 FIX */
+  pointer-events: none;
 }
 
 #japanScene.show {
@@ -208,34 +221,28 @@ button {
 <div class="card">
 <div class="board">
 
-<div class="square allowed">
+<div class="square allowed" data-msg="My bravest move, always leading my heart 💫">
   <div class="piece">♞</div>
-  <div class="pieceText">My bravest move, always leading my heart 💫</div>
 </div>
 
-<div class="square allowed">
+<div class="square allowed" data-msg="Every small step with you feels like forever 🤍">
   <div class="piece">♟️</div>
-  <div class="pieceText">Every small step with you feels like forever 🤍</div>
 </div>
 
-<div class="square">
+<div class="square" data-msg="Strong and steady — but let’s save this for later 🖤">
   <div class="piece">♜</div>
-  <div class="pieceText">Strong and steady — but let’s save this for later 🖤</div>
 </div>
 
-<div class="square">
+<div class="square" data-msg="Different paths, same destiny… just not yet ✨">
   <div class="piece">♝</div>
-  <div class="pieceText">Different paths, same destiny… just not yet ✨</div>
 </div>
 
-<div class="square">
+<div class="square" data-msg="Too powerful — like how much I love you 😌">
   <div class="piece">♛</div>
-  <div class="pieceText">Too powerful — like how much I love you 😌</div>
 </div>
 
-<div class="square">
+<div class="square" data-msg="I guard my heart… because it’s yours ❤️">
   <div class="piece">♚</div>
-  <div class="pieceText">I guard my heart… because it’s yours ❤️</div>
 </div>
 
 </div>
@@ -251,7 +258,7 @@ button {
   <button id="noBtn">No 🙈</button>
 </div>
 
-<p id="noText">That doesn’t feel right… my heart knows your answer already 🤍</p>
+<p id="noText">That doesn’t feel right… my heart already knows your move 🤍</p>
 </div>
 
 </div>
@@ -275,26 +282,6 @@ button {
 </div>
 
 <script>
-/* ---------- ELEMENTS ---------- */
-const q1 = document.getElementById("q1");
-const q2 = document.getElementById("q2");
-const q3 = document.getElementById("q3");
-
-const lockScreen = document.getElementById("lockScreen");
-const protectedContent = document.getElementById("protectedContent");
-const error = document.getElementById("error");
-
-const chessMsg = document.getElementById("chessMsg");
-const noBtn = document.getElementById("noBtn");
-const yesBtn = document.getElementById("yesBtn");
-const noText = document.getElementById("noText");
-
-const mainContent = document.getElementById("mainContent");
-const japanScene = document.getElementById("japanScene");
-const checkmateOverlay = document.getElementById("checkmateOverlay");
-const finalLine = document.getElementById("finalLine");
-const valentineMusic = document.getElementById("valentineMusic");
-
 /* ---------- ANSWERS ---------- */
 const answers = {
   q1: "bunny",
@@ -320,21 +307,25 @@ function unlock() {
 document.querySelectorAll(".square").forEach(square => {
   square.addEventListener("click", () => {
 
-    // remove highlight from others
     document.querySelectorAll(".square")
       .forEach(s => s.classList.remove("active"));
 
     square.classList.add("active");
 
-    if (!square.classList.contains("allowed")) {
-      chessMsg.textContent =
-        "Some moves are meant to be saved… just like us ♟️";
-    } else {
-      chessMsg.textContent = square.dataset.msg;
-    }
+    chessMsg.classList.remove("show");
+    chessMsg.textContent = "";
+
+    setTimeout(() => {
+      if (!square.classList.contains("allowed")) {
+        chessMsg.textContent =
+          "Are you sure? In chess, this isn’t how openings begin ♟️";
+      } else {
+        chessMsg.textContent = square.dataset.msg;
+      }
+      chessMsg.classList.add("show");
+    }, 120);
   });
 });
-
 
 /* ---------- NO BUTTON ---------- */
 noBtn.addEventListener("mouseenter", () => {
@@ -369,3 +360,5 @@ yesBtn.addEventListener("click", () => {
 });
 </script>
 
+</body>
+</html>

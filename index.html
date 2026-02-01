@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Checkmate ♟️❤️</title>
 
 <style>
@@ -16,7 +16,7 @@ body {
   overflow-x: hidden;
 }
 
-/* ---------- MAIN CONTENT ---------- */
+/* ---------- MAIN ---------- */
 #mainContent {
   min-height: 100vh;
   display: flex;
@@ -52,7 +52,7 @@ input {
   margin: 6px 0 14px;
 }
 
-/* ---------- CHESS GAME ---------- */
+/* ---------- CHESS ---------- */
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -78,7 +78,7 @@ input {
   cursor: not-allowed;
 }
 
-/* ---------- VALENTINE BUTTONS ---------- */
+/* ---------- BUTTONS ---------- */
 .buttons {
   position: relative;
   height: 120px;
@@ -111,7 +111,7 @@ button {
   transition: opacity 0.3s ease;
 }
 
-/* ---------- CHECKMATE OVERLAY ---------- */
+/* ---------- CHECKMATE ---------- */
 #checkmateOverlay {
   position: fixed;
   inset: 0;
@@ -185,59 +185,69 @@ button {
 <body>
 
 <!-- MUSIC -->
-<audio id="valentineMusic" src="ekdin.mp3"></audio>
+<audio id="valentineMusic" src="ek-din-aap-humko-mil-jaayenge.mp3"></audio>
 
 <!-- CHECKMATE -->
 <div id="checkmateOverlay">♛ CHECKMATE ♛</div>
 
-<!-- MAIN CONTENT -->
+<!-- MAIN -->
 <div id="mainContent">
   <div class="container">
 
-    <!-- LOGIN -->
+    <!-- LOCK -->
     <div id="lockScreen" class="card">
       <h2>🔐 One last thing…</h2>
 
       <label>What is the name I call you by?</label>
-      <input id="q1" />
+      <input id="q1">
 
       <label>My date of birth (day only)</label>
-      <input id="q2" />
+      <input id="q2">
 
       <label>What is my dream destination?</label>
-      <input id="q3" />
+      <input id="q3">
 
-      <button onclick="unlock()" style="background:#ff4d6d;color:white;width:100%">Unlock 💖</button>
+      <button onclick="unlock()" style="background:#ff4d6d;color:white;width:100%">
+        Unlock 💖
+      </button>
       <p id="error"></p>
     </div>
 
-    <h1>Hey you ♟️❤️</h1>
+    <!-- PROTECTED CONTENT -->
+    <div id="protectedContent" style="display:none;">
 
-    <!-- CHESS -->
-    <div class="card">
-      <h2>Opening move</h2>
-      <p>What can you move first?</p>
-      <div class="board">
-        <div class="square allowed">♞</div>
-        <div class="square allowed">♟️</div>
-        <div class="square">♜</div>
-        <div class="square">♝</div>
-        <div class="square">♛</div>
-        <div class="square">♚</div>
+      <h1>Hey you ♟️❤️</h1>
+
+      <!-- CHESS -->
+      <div class="card">
+        <h2>Opening move</h2>
+        <p>Which piece can move first?</p>
+
+        <div class="board">
+          <div class="square allowed">♞</div>
+          <div class="square allowed">♟️</div>
+          <div class="square">♜</div>
+          <div class="square">♝</div>
+          <div class="square">♛</div>
+          <div class="square">♚</div>
+        </div>
+
+        <p id="chessMsg"></p>
       </div>
-      <p id="chessMsg"></p>
-    </div>
 
-    <!-- QUESTION -->
-    <div class="card">
-      <h2>Will you be my Valentine?</h2>
-      <div class="buttons">
-        <button id="yesBtn">Yes 💖</button>
-        <button id="noBtn">No 🙈</button>
+      <!-- QUESTION -->
+      <div class="card">
+        <h2>Will you be my Valentine?</h2>
+
+        <div class="buttons">
+          <button id="yesBtn">Yes 💖</button>
+          <button id="noBtn">No 🙈</button>
+        </div>
+
+        <p id="noText">Who are you imposter? My bunny won’t choose this 😌</p>
       </div>
-      <p id="noText">Who are you imposter? My bunny won’t choose this 😌</p>
-    </div>
 
+    </div>
   </div>
 </div>
 
@@ -258,7 +268,11 @@ button {
 </div>
 
 <script>
-const answers = { q1:"bunny", q2:"28", q3:"japan" };
+const answers = {
+  q1: "bunny",
+  q2: "28",
+  q3: "japan"
+};
 
 function unlock() {
   if (
@@ -267,30 +281,32 @@ function unlock() {
     q3.value.toLowerCase() === answers.q3
   ) {
     lockScreen.style.display = "none";
+    protectedContent.style.display = "block";
   } else {
     error.textContent = "Hmm… try again 😌";
   }
 }
 
-/* Chess logic */
-document.querySelectorAll(".square").forEach(sq=>{
+/* Chess */
+document.querySelectorAll(".square").forEach(sq => {
   sq.onclick = () => {
-    if(!sq.classList.contains("allowed")){
-      chessMsg.textContent = "Are you sure you can do that as an opening move? ♟️";
+    if (!sq.classList.contains("allowed")) {
+      chessMsg.textContent =
+        "Are you sure you can do that as an opening move? ♟️";
     } else {
       chessMsg.textContent = "Good move 😉";
     }
   };
 });
 
-/* No button */
+/* NO button */
 noBtn.onmouseenter = () => {
   noText.style.opacity = 1;
   noBtn.style.transform =
-    `translate(${Math.random()*200-100}px,${Math.random()*60-30}px)`;
+    `translate(${Math.random()*200-100}px, ${Math.random()*60-30}px)`;
 };
 
-/* YES button */
+/* YES */
 yesBtn.onclick = () => {
   noBtn.remove();
   noText.remove();
@@ -298,20 +314,20 @@ yesBtn.onclick = () => {
   valentineMusic.play();
   checkmateOverlay.classList.add("show");
 
-  setTimeout(()=>{
+  setTimeout(() => {
     checkmateOverlay.classList.remove("show");
     mainContent.classList.add("fadeOut");
 
-    setTimeout(()=>{
-      mainContent.style.display="none";
+    setTimeout(() => {
+      mainContent.style.display = "none";
       japanScene.classList.add("show");
 
-      setTimeout(()=>{
-        finalLine.style.opacity=1;
-      },1500);
+      setTimeout(() => {
+        finalLine.style.opacity = 1;
+      }, 1500);
 
-    },1200);
-  },1200);
+    }, 1200);
+  }, 1200);
 };
 </script>
 

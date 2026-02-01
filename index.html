@@ -319,15 +319,22 @@ function unlock() {
 /* ---------- CHESS ---------- */
 document.querySelectorAll(".square").forEach(square => {
   square.addEventListener("click", () => {
+
+    // remove highlight from others
+    document.querySelectorAll(".square")
+      .forEach(s => s.classList.remove("active"));
+
+    square.classList.add("active");
+
     if (!square.classList.contains("allowed")) {
       chessMsg.textContent =
         "Some moves are meant to be saved… just like us ♟️";
     } else {
-      chessMsg.textContent =
-        "Perfect opening — just like you 😉";
+      chessMsg.textContent = square.dataset.msg;
     }
   });
 });
+
 
 /* ---------- NO BUTTON ---------- */
 noBtn.addEventListener("mouseenter", () => {

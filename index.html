@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Checkmate ♟️❤️</title>
+<title>Checkmate ❤️</title>
 
 <style>
 * { box-sizing: border-box; }
@@ -25,9 +25,7 @@ body {
   transition: opacity 1.2s ease;
 }
 
-#mainContent.fadeOut {
-  opacity: 0;
-}
+#mainContent.fadeOut { opacity: 0; }
 
 .container {
   max-width: 900px;
@@ -40,7 +38,6 @@ body {
   border-radius: 20px;
   padding: 24px;
   margin: 20px 0;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
 }
 
 /* ---------- LOGIN ---------- */
@@ -56,33 +53,34 @@ input {
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  max-width: 320px;
+  gap: 14px;
+  max-width: 360px;
   margin: 20px auto;
 }
 
 .square {
-  aspect-ratio: 1 / 1;
-  border-radius: 12px;
+  padding: 16px;
+  border-radius: 16px;
   background: #f5f5f5;
   color: #222;
-  font-size: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-.square.disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+.square:hover { transform: scale(1.05); }
+
+.piece { font-size: 36px; }
+
+.pieceText {
+  font-size: 13px;
+  margin-top: 6px;
+  opacity: 0.85;
 }
+
+.allowed { border: 3px solid #ff4d6d; }
 
 /* ---------- BUTTONS ---------- */
-.buttons {
-  position: relative;
-  height: 120px;
-}
+.buttons { position: relative; height: 120px; }
 
 button {
   padding: 14px 28px;
@@ -92,10 +90,7 @@ button {
   cursor: pointer;
 }
 
-#yesBtn {
-  background: #ff4d6d;
-  color: white;
-}
+#yesBtn { background: #ff4d6d; color: white; }
 
 #noBtn {
   position: absolute;
@@ -126,23 +121,18 @@ button {
   z-index: 50;
 }
 
-#checkmateOverlay.show {
-  opacity: 1;
-}
+#checkmateOverlay.show { opacity: 1; }
 
 /* ---------- JAPAN SCENE ---------- */
 #japanScene {
   position: fixed;
   inset: 0;
   opacity: 0;
-  pointer-events: none;
   transition: opacity 2s ease;
+  z-index: 40;
 }
 
-#japanScene.show {
-  opacity: 1;
-  pointer-events: auto;
-}
+#japanScene.show { opacity: 1; }
 
 #japanScene video {
   width: 100%;
@@ -158,7 +148,6 @@ button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 30px;
 }
 
 .photos {
@@ -168,10 +157,7 @@ button {
   max-width: 600px;
 }
 
-.photos img {
-  width: 100%;
-  border-radius: 16px;
-}
+.photos img { width: 100%; border-radius: 16px; }
 
 #finalLine {
   margin-top: 24px;
@@ -184,95 +170,108 @@ button {
 
 <body>
 
-<!-- MUSIC -->
 <audio id="valentineMusic" src="ek-din-aap-humko-mil-jaayenge.mp3"></audio>
 
-<!-- CHECKMATE -->
 <div id="checkmateOverlay">♛ CHECKMATE ♛</div>
 
-<!-- MAIN -->
 <div id="mainContent">
-  <div class="container">
+<div class="container">
 
-    <!-- LOCK -->
-    <div id="lockScreen" class="card">
-      <h2>🔐 One last thing…</h2>
+<!-- LOCK -->
+<div id="lockScreen" class="card">
+  <h2>🔐 Just one last thing…</h2>
 
-      <label>What is the name I call you by?</label>
-      <input id="q1">
+  <label>What is the name I call you by?</label>
+  <input id="q1">
 
-      <label>My date of birth (day only)</label>
-      <input id="q2">
+  <label>My date of birth (day only)</label>
+  <input id="q2">
 
-      <label>What is my dream destination?</label>
-      <input id="q3">
+  <label>What is my dream destination?</label>
+  <input id="q3">
 
-      <button onclick="unlock()" style="background:#ff4d6d;color:white;width:100%">
-        Unlock 💖
-      </button>
-      <p id="error"></p>
-    </div>
-
-    <!-- PROTECTED CONTENT -->
-    <div id="protectedContent" style="display:none;">
-
-      <h1>Hey you ♟️❤️</h1>
-
-      <!-- CHESS -->
-      <div class="card">
-        <h2>Opening move</h2>
-        <p>Which piece can move first?</p>
-
-        <div class="board">
-          <div class="square allowed">♞</div>
-          <div class="square allowed">♟️</div>
-          <div class="square">♜</div>
-          <div class="square">♝</div>
-          <div class="square">♛</div>
-          <div class="square">♚</div>
-        </div>
-
-        <p id="chessMsg"></p>
-      </div>
-
-      <!-- QUESTION -->
-      <div class="card">
-        <h2>Will you be my Valentine?</h2>
-
-        <div class="buttons">
-          <button id="yesBtn">Yes 💖</button>
-          <button id="noBtn">No 🙈</button>
-        </div>
-
-        <p id="noText">Who are you imposter? My bunny won’t choose this 😌</p>
-      </div>
-
-    </div>
-  </div>
+  <button onclick="unlock()" style="background:#ff4d6d;color:white;width:100%">
+    Unlock 💖
+  </button>
+  <p id="error"></p>
 </div>
 
-<!-- JAPAN SCENE -->
-<div id="japanScene">
-  <video autoplay muted loop playsinline>
-    <source src="japan.mp4" type="video/mp4">
-  </video>
+<!-- PROTECTED -->
+<div id="protectedContent" style="display:none;">
 
-  <div class="sceneOverlay">
-    <div class="photos">
-      <img src="photo1.jpg">
-      <img src="photo2.jpg">
-      <img src="photo3.jpg">
-    </div>
-    <p id="finalLine">Forever my best move.</p>
+<h1>Choose your opening move ♟️</h1>
+
+<div class="card">
+<div class="board">
+
+<div class="square allowed">
+  <div class="piece">♞</div>
+  <div class="pieceText">My bravest move, always leading my heart 💫</div>
+</div>
+
+<div class="square allowed">
+  <div class="piece">♟️</div>
+  <div class="pieceText">Every small step with you feels like forever 🤍</div>
+</div>
+
+<div class="square">
+  <div class="piece">♜</div>
+  <div class="pieceText">Strong and steady — but let’s save this for later 🖤</div>
+</div>
+
+<div class="square">
+  <div class="piece">♝</div>
+  <div class="pieceText">Different paths, same destiny… just not yet ✨</div>
+</div>
+
+<div class="square">
+  <div class="piece">♛</div>
+  <div class="pieceText">Too powerful — like how much I love you 😌</div>
+</div>
+
+<div class="square">
+  <div class="piece">♚</div>
+  <div class="pieceText">I guard my heart… because it’s yours ❤️</div>
+</div>
+
+</div>
+
+<p id="chessMsg"></p>
+</div>
+
+<div class="card">
+<h2>Will you be my Valentine?</h2>
+
+<div class="buttons">
+  <button id="yesBtn">Yes 💖</button>
+  <button id="noBtn">No 🙈</button>
+</div>
+
+<p id="noText">That doesn’t feel right… my heart knows your answer already 🤍</p>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- JAPAN -->
+<div id="japanScene">
+<video autoplay muted loop playsinline>
+  <source src="japan.mp4" type="video/mp4">
+</video>
+
+<div class="sceneOverlay">
+  <div class="photos">
+    <img src="photo1.jpg">
+    <img src="photo2.jpg">
+    <img src="photo3.jpg">
   </div>
+  <p id="finalLine">From the first move… it was always you.</p>
+</div>
 </div>
 
 <script>
-const answers = {
-  q1: "bunny",
-  q2: "28",
-  q3: "prague"
-};
+const answers = { q1:"bunny", q2:"28", q3:"japan" };
 
 function unlock() {
   if (
@@ -280,54 +279,44 @@ function unlock() {
     q2.value === answers.q2 &&
     q3.value.toLowerCase() === answers.q3
   ) {
-    lockScreen.style.display = "none";
-    protectedContent.style.display = "block";
+    lockScreen.style.display="none";
+    protectedContent.style.display="block";
   } else {
-    error.textContent = "Hmm… try again 😌";
+    error.textContent="Hmm… try again 😌";
   }
 }
 
-/* Chess */
-document.querySelectorAll(".square").forEach(sq => {
-  sq.onclick = () => {
-    if (!sq.classList.contains("allowed")) {
-      chessMsg.textContent =
-        "Are you sure you can do that as an opening move? ♟️";
+document.querySelectorAll(".square").forEach(sq=>{
+  sq.onclick=()=>{
+    if(!sq.classList.contains("allowed")){
+      chessMsg.textContent="Some moves are meant to be saved… just like us ♟️";
     } else {
-      chessMsg.textContent = "Good move 😉";
+      chessMsg.textContent="Perfect opening — just like you 😉";
     }
   };
 });
 
-/* NO button */
-noBtn.onmouseenter = () => {
-  noText.style.opacity = 1;
-  noBtn.style.transform =
-    `translate(${Math.random()*200-100}px, ${Math.random()*60-30}px)`;
+noBtn.onmouseenter=()=>{
+  noText.style.opacity=1;
+  noBtn.style.transform=`translate(${Math.random()*200-100}px,0)`;
 };
 
-/* YES */
-yesBtn.onclick = () => {
+yesBtn.onclick=()=>{
   noBtn.remove();
   noText.remove();
-
   valentineMusic.play();
   checkmateOverlay.classList.add("show");
 
-  setTimeout(() => {
+  setTimeout(()=>{
     checkmateOverlay.classList.remove("show");
     mainContent.classList.add("fadeOut");
 
-    setTimeout(() => {
-      mainContent.style.display = "none";
+    setTimeout(()=>{
+      mainContent.style.display="none";
       japanScene.classList.add("show");
-
-      setTimeout(() => {
-        finalLine.style.opacity = 1;
-      }, 1500);
-
-    }, 1200);
-  }, 1200);
+      setTimeout(()=>finalLine.style.opacity=1,1500);
+    },1200);
+  },1200);
 };
 </script>
 

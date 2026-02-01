@@ -4,25 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Our Little Checkmate ❤️</title>
+
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-family: 'Segoe UI', system-ui, sans-serif;
       background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       color: #fff;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow-x: hidden;
     }
+
     .container {
       max-width: 900px;
       padding: 24px;
       text-align: center;
     }
-    h1, h2 {
-      margin-bottom: 12px;
-    }
+
     .card {
       background: rgba(255,255,255,0.08);
       border-radius: 20px;
@@ -30,39 +31,16 @@
       margin: 20px 0;
       box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     }
-    /* Chess mini game */
-    .board {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      max-width: 320px;
-      margin: 20px auto;
+
+    /* LOCK SCREEN */
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      margin: 6px 0 16px;
     }
-    .square {
-      aspect-ratio: 1 / 1;
-      border-radius: 12px;
-      background: #f5f5f5;
-      color: #222;
-      font-size: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: transform 0.2s, background 0.2s;
-    }
-    .square:hover {
-      transform: scale(1.05);
-      background: #ffdde1;
-    }
-    .revealed {
-      background: #ffb6c1;
-    }
-    /* Valentine buttons */
-    .buttons {
-      position: relative;
-      height: 120px;
-      margin-top: 20px;
-    }
+
     button {
       padding: 14px 28px;
       font-size: 18px;
@@ -70,11 +48,40 @@
       border: none;
       cursor: pointer;
     }
-    #yesBtn {
-      background: #ff4d6d;
-      color: #fff;
-      margin-right: 20px;
+
+    /* CHESS MINI */
+    .board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      max-width: 320px;
+      margin: 20px auto;
     }
+
+    .square {
+      aspect-ratio: 1/1;
+      background: #f5f5f5;
+      color: #222;
+      border-radius: 12px;
+      font-size: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .square:hover { transform: scale(1.05); background: #ffdde1; }
+    .revealed { background: #ffb6c1; }
+
+    /* BUTTONS */
+    .buttons {
+      position: relative;
+      height: 120px;
+      margin-top: 20px;
+    }
+
+    #yesBtn { background: #ff4d6d; color: #fff; }
     #noBtn {
       position: absolute;
       background: #555;
@@ -82,100 +89,184 @@
       left: 50%;
       top: 60px;
     }
-    /* Gallery */
+
+    #noText {
+      margin-top: 12px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    /* GALLERY */
     .gallery {
       display: none;
       margin-top: 20px;
       animation: pop 0.6s ease;
     }
+
     .photos {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       gap: 12px;
       margin-top: 16px;
     }
+
     .photos img {
       width: 100%;
       border-radius: 16px;
-      object-fit: cover;
     }
+
     @keyframes pop {
       from { transform: scale(0.9); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
+
+    /* CHECKMATE OVERLAY */
+    #checkmateOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 999;
+    }
+
+    #checkmateOverlay.show { opacity: 1; }
+
+    #checkmateText {
+      font-size: 48px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      transform: scale(0.6);
+      opacity: 0;
+    }
+
+    #checkmateOverlay.show #checkmateText {
+      animation: checkmatePop 1.2s ease forwards;
+    }
+
+    @keyframes checkmatePop {
+      0% { transform: scale(0.6); opacity: 0; }
+      50% { transform: scale(1.15); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
   </style>
 </head>
+
 <body>
-  <div class="container">
+<div class="container">
+
+  <!-- LOCK SCREEN -->
+  <div id="lockScreen" class="card" style="max-width:500px;margin:auto;">
+    <h2>🔐 Little Lock Before You Enter</h2>
+
+    <label>1. What is the name I call you by?</label>
+    <input id="q1" />
+
+    <label>2. The day of the month I was born on?</label>
+    <input id="q2" />
+
+    <label>3. What is my dream destination?</label>
+    <input id="q3" />
+
+    <button onclick="unlock()" style="background:#ff4d6d;color:#fff;width:100%;">Unlock 💘</button>
+    <p id="error" style="color:#ffb6c1;"></p>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div id="mainContent" style="display:none;">
+
     <h1>Hey You ♟️❤️</h1>
     <p>I made this tiny corner of the internet just for us.</p>
 
     <div class="card">
-      <h2>A tiny chess game (no pressure 😄)</h2>
-      <p>Tap the pieces and discover why I adore you.</p>
+      <h2>A tiny chess game</h2>
       <div class="board">
         <div class="square" data-msg="You’re my favorite opening">♜</div>
-        <div class="square" data-msg="You make every move exciting">♞</div>
-        <div class="square" data-msg="Life with you feels like a win">♝</div>
         <div class="square" data-msg="Checkmate, you have my heart">♛</div>
-        <div class="square" data-msg="Smart, calm, beautiful">♚</div>
-        <div class="square" data-msg="Every game is better together">♟️</div>
-        <div class="square" data-msg="I’d choose you every time">♜</div>
-        <div class="square" data-msg="Forever my best move">♞</div>
+        <div class="square" data-msg="Every move is better with you">♞</div>
+        <div class="square" data-msg="Forever my best move">♚</div>
       </div>
       <p id="chessMessage"></p>
     </div>
 
     <div class="card">
-      <h2>So… one important question 💘</h2>
-      <p>Will you be my Valentine?</p>
+      <h2>Will you be my Valentine? 💘</h2>
       <div class="buttons">
         <button id="yesBtn">Yes 💖</button>
         <button id="noBtn">No 🙈</button>
       </div>
+      <p id="noText">Checkmate ♛</p>
     </div>
 
     <div class="card gallery" id="gallery">
       <h2>YAYYYY!!! 🎉🥰</h2>
-      <p>Best answer ever.</p>
-      <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDJ3b2R4bWl1bHRnZ2F1bHJkZ3J4aTh6Y2p3cGZ4b3YxNnZ2c2h4diZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l0MYt5jPR6QX5pnqM/giphy.gif" alt="Yay meme" style="width:200px;border-radius:16px;" />
+      <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" width="200" />
       <div class="photos">
-        <!-- Replace these with your own photos -->
-        <img src="https://placekitten.com/300/300" />
-        <img src="https://placekitten.com/301/300" />
-        <img src="https://placekitten.com/300/301" />
-        <img src="https://placekitten.com/302/300" />
+        <img src="https://placekitten.com/300/300">
+        <img src="https://placekitten.com/301/300">
+        <img src="https://placekitten.com/302/300">
       </div>
     </div>
+
   </div>
+</div>
 
-  <script>
-    // Chess message reveal
-    const squares = document.querySelectorAll('.square');
-    const msg = document.getElementById('chessMessage');
-    squares.forEach(sq => {
-      sq.addEventListener('click', () => {
-        squares.forEach(s => s.classList.remove('revealed'));
-        sq.classList.add('revealed');
-        msg.textContent = sq.dataset.msg;
-      });
-    });
+<!-- CHECKMATE OVERLAY -->
+<div id="checkmateOverlay">
+  <div id="checkmateText">CHECKMATE ♛</div>
+</div>
 
-    // Moving NO button
-    const noBtn = document.getElementById('noBtn');
-    noBtn.addEventListener('mouseenter', () => {
-      const x = Math.random() * 200 - 100;
-      const y = Math.random() * 60 - 30;
-      noBtn.style.transform = `translate(${x}px, ${y}px)`;
-    });
+<script>
+  // Chess messages
+  document.querySelectorAll('.square').forEach(sq => {
+    sq.onclick = () => {
+      document.querySelectorAll('.square').forEach(s => s.classList.remove('revealed'));
+      sq.classList.add('revealed');
+      chessMessage.textContent = sq.dataset.msg;
+    };
+  });
 
-    // YES button
-    const yesBtn = document.getElementById('yesBtn');
-    const gallery = document.getElementById('gallery');
-    yesBtn.addEventListener('click', () => {
+  // No button escape
+  noBtn.onmouseenter = () => {
+    noBtn.style.transform = `translate(${Math.random()*200-100}px,${Math.random()*60-30}px)`;
+    noText.style.opacity = 1;
+  };
+
+  // Yes button with CHECKMATE animation
+  yesBtn.onclick = () => {
+    checkmateOverlay.classList.add('show');
+
+    setTimeout(() => {
+      checkmateOverlay.classList.remove('show');
       gallery.style.display = 'block';
       gallery.scrollIntoView({ behavior: 'smooth' });
-    });
-  </script>
+    }, 1800);
+  };
+
+  // ANSWERS
+  const answers = {
+    q1: "bunny",
+    q2: "28",
+    q3: "prague"
+  };
+
+  function unlock() {
+    if (
+      q1.value.trim().toLowerCase() === answers.q1 &&
+      q2.value.trim() === answers.q2 &&
+      q3.value.trim().toLowerCase() === answers.q3
+    ) {
+      lockScreen.style.display = "none";
+      mainContent.style.display = "block";
+    } else {
+      error.textContent = "Hmm… that doesn’t feel right 😌";
+    }
+  }
+</script>
+
 </body>
 </html>

@@ -13,10 +13,72 @@ body {
   font-family: "Segoe UI", system-ui, sans-serif;
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   color: white;
+  overflow-x: hidden;
+}
+
+/* ================= LOVE BACKGROUND ================= */
+
+#loveBackground {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 14px;
+  padding: 20px;
+}
+
+.loveCard {
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(6px);
+  border-radius: 16px;
+  padding: 14px;
+  text-align: center;
+  font-size: 14px;
+  animation: floatCard 8s ease-in-out infinite;
+}
+
+.highlightLove {
+  border: 2px solid #ff4d6d;
+  box-shadow: 0 0 14px rgba(255,77,109,0.7);
+  font-weight: bold;
+}
+
+.japanLove {
+  font-size: 18px;
+  border: 2px solid #ff9ecb;
+  box-shadow: 0 0 20px rgba(255,158,203,0.8);
+}
+
+@keyframes floatCard {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ================= SAKURA ================= */
+
+.sakura {
+  position: fixed;
+  top: -20px;
+  font-size: 18px;
+  opacity: 0.8;
+  animation: fall linear forwards;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0.2;
+  }
 }
 
 /* ================= MAIN ================= */
+
 #mainContent {
+  position: relative;
+  z-index: 5;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -39,7 +101,6 @@ body {
   margin: 20px 0;
 }
 
-/* ================= LOGIN ================= */
 input {
   width: 100%;
   padding: 12px;
@@ -50,6 +111,7 @@ input {
 }
 
 /* ================= CHESS ================= */
+
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -64,14 +126,10 @@ input {
   background: #f5f5f5;
   color: #222;
   cursor: pointer;
-  transition: transform 0.2s ease, outline 0.2s ease;
 }
-
-.square:hover { transform: scale(1.05); }
 
 .square.active {
   outline: 3px solid #ff4d6d;
-  transform: scale(1.08);
 }
 
 .piece { font-size: 36px; }
@@ -81,10 +139,9 @@ input {
 #chessMsg {
   min-height: 32px;
   margin-top: 14px;
-  font-size: 16px;
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition: 0.4s ease;
 }
 
 #chessMsg.show {
@@ -93,6 +150,7 @@ input {
 }
 
 /* ================= BUTTONS ================= */
+
 .buttons { position: relative; height: 120px; }
 
 button {
@@ -113,13 +171,10 @@ button {
   color: white;
 }
 
-#noText {
-  margin-top: 12px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
+#noText { margin-top: 12px; opacity: 0; transition: 0.3s; }
 
 /* ================= CHECKMATE ================= */
+
 #checkmateOverlay {
   position: fixed;
   inset: 0;
@@ -130,18 +185,19 @@ button {
   font-size: 64px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.5s ease;
+  transition: 0.5s ease;
   z-index: 50;
 }
 
 #checkmateOverlay.show { opacity: 1; }
 
 /* ================= JAPAN SCENE ================= */
+
 #japanScene {
   position: fixed;
   inset: 0;
   opacity: 0;
-  transition: opacity 2s ease;
+  transition: 2s ease;
   z-index: 40;
   pointer-events: none;
 }
@@ -180,32 +236,32 @@ button {
   margin-top: 24px;
   font-size: 18px;
   opacity: 0;
-  transition: opacity 2s ease;
+  transition: 2s ease;
 }
 </style>
 </head>
 
 <body>
 
-<audio id="valentineMusic" src="ekdin.mp3"></audio>
-
+<div id="loveBackground"></div>
 <div id="checkmateOverlay">♛ CHECKMATE ♛</div>
+
+<audio id="valentineMusic" src="ekdin.mp3"></audio>
 
 <div id="mainContent">
 <div class="container">
 
-<!-- LOCK SCREEN -->
 <div id="lockScreen" class="card">
   <h2>🔐 Just one last thing…</h2>
 
   <label>What is the name I call you by?</label>
-  <input id="q1" autocomplete="off" />
+  <input id="q1" />
 
   <label>My date of birth (day only)</label>
-  <input id="q2" autocomplete="off" />
+  <input id="q2" />
 
   <label>What is my dream destination?</label>
-  <input id="q3" autocomplete="off" />
+  <input id="q3" />
 
   <button onclick="unlock()" style="background:#ff4d6d;color:white;width:100%">
     Unlock 💖
@@ -213,64 +269,37 @@ button {
   <p id="error"></p>
 </div>
 
-<!-- PROTECTED CONTENT -->
 <div id="protectedContent" style="display:none;">
-
 <h1>Choose your opening move ♟️</h1>
 
 <div class="card">
 <div class="board">
-
-<div class="square allowed" data-msg="My bravest move, always leading my heart 💫">
-  <div class="piece">♞</div>
+<div class="square allowed" data-msg="My bravest move, always leading my heart 💫"><div class="piece">♞</div></div>
+<div class="square allowed" data-msg="Every small step with you feels like forever 🤍"><div class="piece">♟️</div></div>
+<div class="square" data-msg="Strong and steady — but let’s save this for later 🖤"><div class="piece">♜</div></div>
+<div class="square" data-msg="Different paths, same destiny… just not yet ✨"><div class="piece">♝</div></div>
+<div class="square" data-msg="Too powerful — like how much I love you 😌"><div class="piece">♛</div></div>
+<div class="square" data-msg="I guard my heart… because it’s yours ❤️"><div class="piece">♚</div></div>
 </div>
-
-<div class="square allowed" data-msg="Every small step with you feels like forever 🤍">
-  <div class="piece">♟️</div>
-</div>
-
-<div class="square" data-msg="Strong and steady — but let’s save this for later 🖤">
-  <div class="piece">♜</div>
-</div>
-
-<div class="square" data-msg="Different paths, same destiny… just not yet ✨">
-  <div class="piece">♝</div>
-</div>
-
-<div class="square" data-msg="Too powerful — like how much I love you 😌">
-  <div class="piece">♛</div>
-</div>
-
-<div class="square" data-msg="I guard my heart… because it’s yours ❤️">
-  <div class="piece">♚</div>
-</div>
-
-</div>
-
 <p id="chessMsg"></p>
 </div>
 
 <div class="card">
 <h2>Will you be my Valentine?</h2>
-
 <div class="buttons">
   <button id="yesBtn">Yes 💖</button>
   <button id="noBtn">No 🙈</button>
 </div>
-
 <p id="noText">That doesn’t feel right… my heart already knows your move 🤍</p>
 </div>
-
 </div>
 </div>
 </div>
 
-<!-- JAPAN SCENE -->
 <div id="japanScene">
 <video autoplay muted loop playsinline>
   <source src="japan.mp4" type="video/mp4">
 </video>
-
 <div class="sceneOverlay">
   <div class="photos">
     <img src="photo1.jpg">
@@ -282,14 +311,60 @@ button {
 </div>
 
 <script>
-/* ---------- ANSWERS ---------- */
-const answers = {
-  q1: "bunny",
-  q2: "28",
-  q3: "prague"
-};
 
-/* ---------- UNLOCK ---------- */
+/* ---------- LOVE LANGUAGES ---------- */
+
+const loveLanguages = [
+"I love you","मैं तुमसे प्यार करता हूँ","愛してる","Te amo","Je t’aime",
+"Ich liebe dich","Ti amo","Te quiero","Eu te amo","Ik hou van jou",
+"Я тебя люблю","我爱你","사랑해","Minä rakastan sinua","Jeg elsker deg",
+"Jag älskar dig","Kocham cię","Miluji tě","Szeretlek","Te iubesc",
+"Volim te","Ana behibek","أحبك","אני אוהב אותך","Seni seviyorum",
+"Σ’ αγαπώ","Ninakupenda","Ngiyakuthanda","Aroha ahau ki a koe"
+];
+
+/* ---------- CREATE LOVE CARDS ---------- */
+
+const bg = document.getElementById("loveBackground");
+
+loveLanguages.forEach(text => {
+
+  const card = document.createElement("div");
+  card.className = "loveCard";
+  card.textContent = text;
+
+  if (text === "I love you" || text === "मैं तुमसे प्यार करता हूँ") {
+    card.classList.add("highlightLove");
+  }
+
+  if (text === "愛してる") {
+    card.classList.add("japanLove");
+  }
+
+  bg.appendChild(card);
+});
+
+/* ---------- SAKURA ---------- */
+
+function createPetal() {
+  const petal = document.createElement("div");
+  petal.className = "sakura";
+  petal.textContent = "🌸";
+
+  petal.style.left = Math.random() * 100 + "vw";
+  petal.style.animationDuration = 5 + Math.random() * 5 + "s";
+
+  document.body.appendChild(petal);
+
+  setTimeout(() => petal.remove(), 9000);
+}
+
+setInterval(createPetal, 400);
+
+/* ---------- LOCK ---------- */
+
+const answers = { q1:"bunny", q2:"28", q3:"prague" };
+
 function unlock() {
   if (
     q1.value.trim().toLowerCase() === answers.q1 &&
@@ -303,23 +378,21 @@ function unlock() {
   }
 }
 
-/* ---------- CHESS LOGIC ---------- */
+/* ---------- CHESS ---------- */
+
 let openingPlayed = false;
 
 document.querySelectorAll(".square").forEach(square => {
-  square.addEventListener("click", () => {
+  square.onclick = () => {
 
-    // visual selection
     document.querySelectorAll(".square")
       .forEach(s => s.classList.remove("active"));
     square.classList.add("active");
 
     chessMsg.classList.remove("show");
-    chessMsg.textContent = "";
 
     setTimeout(() => {
 
-      // BEFORE OPENING MOVE
       if (!openingPlayed) {
         if (square.classList.contains("allowed")) {
           openingPlayed = true;
@@ -330,37 +403,36 @@ document.querySelectorAll(".square").forEach(square => {
           chessMsg.textContent =
             "Are you sure? In chess, this isn’t how openings begin ♟️";
         }
-      }
-
-      // AFTER OPENING MOVE
-      else {
+      } else {
         chessMsg.textContent = square.dataset.msg;
       }
 
       chessMsg.classList.add("show");
 
     }, 120);
-  });
+  };
 });
-
 
 /* ---------- NO BUTTON ---------- */
-noBtn.addEventListener("mouseenter", () => {
+
+noBtn.onmouseenter = () => {
   noText.style.opacity = 1;
   noBtn.style.transform =
-    `translate(${Math.random() * 200 - 100}px, 0)`;
-});
+    `translate(${Math.random()*200-100}px,0)`;
+};
 
 /* ---------- YES BUTTON ---------- */
-yesBtn.addEventListener("click", () => {
+
+yesBtn.onclick = () => {
+
   noBtn.remove();
   noText.remove();
 
   valentineMusic.play();
-
   checkmateOverlay.classList.add("show");
 
   setTimeout(() => {
+
     checkmateOverlay.classList.remove("show");
     mainContent.classList.add("fadeOut");
 
@@ -373,9 +445,10 @@ yesBtn.addEventListener("click", () => {
       }, 1500);
 
     }, 1200);
-  }, 1200);
-});
-</script>
 
+  }, 1200);
+};
+
+</script>
 </body>
 </html>

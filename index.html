@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Checkmate ❤️ </title>
+<title>Checkmate ❤️</title>
 
 <style>
 * { box-sizing: border-box; }
@@ -16,7 +16,7 @@ body {
   overflow-x: hidden;
 }
 
-/* ================= SAKURA ================= */
+/* SAKURA */
 
 .sakura {
   position: fixed;
@@ -35,7 +35,7 @@ body {
   }
 }
 
-/* ================= MAIN ================= */
+/* MAIN */
 
 #mainContent {
   position: relative;
@@ -71,7 +71,7 @@ input {
   font-size: 16px;
 }
 
-/* ================= CHESS ================= */
+/* CHESS */
 
 .board {
   display: grid;
@@ -89,12 +89,8 @@ input {
   cursor: pointer;
 }
 
-.square.active {
-  outline: 3px solid #ff4d6d;
-}
-
+.square.active { outline: 3px solid #ff4d6d; }
 .piece { font-size: 36px; }
-
 .allowed { border: 3px solid #ff4d6d; }
 
 #chessMsg {
@@ -110,7 +106,7 @@ input {
   transform: translateY(0);
 }
 
-/* ================= BUTTONS ================= */
+/* BUTTONS */
 
 .buttons { position: relative; height: 120px; }
 
@@ -134,7 +130,7 @@ button {
 
 #noText { margin-top: 12px; opacity: 0; transition: 0.3s; }
 
-/* ================= CHECKMATE ================= */
+/* CHECKMATE */
 
 #checkmateOverlay {
   position: fixed;
@@ -152,7 +148,7 @@ button {
 
 #checkmateOverlay.show { opacity: 1; }
 
-/* ================= JAPAN SCENE ================= */
+/* JAPAN SCENE */
 
 #japanScene {
   position: fixed;
@@ -238,7 +234,7 @@ button {
 <div class="square allowed" data-msg="Every small step with you feels like forever 🤍"><div class="piece">♟️</div></div>
 <div class="square" data-msg="Strong and steady — but let’s save this for later 🖤"><div class="piece">♜</div></div>
 <div class="square" data-msg="Different paths, same destiny… just not yet ✨"><div class="piece">♝</div></div>
-<div class="square" data-msg="Too powerful — like how much I miss you 😌"><div class="piece">♛</div></div>
+<div class="square" data-msg="Too powerful — like how much I love you 😌"><div class="piece">♛</div></div>
 <div class="square" data-msg="I guard my heart… because it’s yours ❤️"><div class="piece">♚</div></div>
 </div>
 <p id="chessMsg"></p>
@@ -261,18 +257,13 @@ button {
   <source src="japan.mp4" type="video/mp4">
 </video>
 <div class="sceneOverlay">
-  <div class="photos">
-    <img src="photo1.jpg">
-    <img src="photo2.jpg">
-    <img src="photo3.jpg">
-  </div>
   <p id="finalLine">From the first move… it was always you.</p>
 </div>
 </div>
 
 <script>
 
-/* ---------- SAKURA ---------- */
+/* SAKURA */
 
 function createPetal() {
   const petal = document.createElement("div");
@@ -283,13 +274,18 @@ function createPetal() {
   petal.style.animationDuration = 5 + Math.random() * 5 + "s";
 
   document.body.appendChild(petal);
-
   setTimeout(() => petal.remove(), 9000);
 }
-
 setInterval(createPetal, 400);
 
-/* ---------- LOCK ---------- */
+/* LOCK */
+
+const q1 = document.getElementById("q1");
+const q2 = document.getElementById("q2");
+const q3 = document.getElementById("q3");
+const lockScreen = document.getElementById("lockScreen");
+const protectedContent = document.getElementById("protectedContent");
+const error = document.getElementById("error");
 
 const answers = { q1:"bunny", q2:"28", q3:"prague" };
 
@@ -301,13 +297,15 @@ function unlock() {
   ) {
     lockScreen.style.display = "none";
     protectedContent.style.display = "block";
+    error.textContent = "";
   } else {
     error.textContent = "Hmm… try again 😌";
   }
 }
 
-/* ---------- CHESS ---------- */
+/* CHESS */
 
+const chessMsg = document.getElementById("chessMsg");
 let openingPlayed = false;
 
 document.querySelectorAll(".square").forEach(square => {
@@ -341,15 +339,22 @@ document.querySelectorAll(".square").forEach(square => {
   };
 });
 
-/* ---------- NO BUTTON ---------- */
+/* BUTTONS */
+
+const noBtn = document.getElementById("noBtn");
+const noText = document.getElementById("noText");
+const yesBtn = document.getElementById("yesBtn");
+const valentineMusic = document.getElementById("valentineMusic");
+const checkmateOverlay = document.getElementById("checkmateOverlay");
+const mainContent = document.getElementById("mainContent");
+const japanScene = document.getElementById("japanScene");
+const finalLine = document.getElementById("finalLine");
 
 noBtn.onmouseenter = () => {
   noText.style.opacity = 1;
   noBtn.style.transform =
     `translate(${Math.random()*200-100}px,0)`;
 };
-
-/* ---------- YES BUTTON ---------- */
 
 yesBtn.onclick = () => {
 
@@ -365,3 +370,18 @@ yesBtn.onclick = () => {
     mainContent.classList.add("fadeOut");
 
     setTimeout(() => {
+      mainContent.style.display = "none";
+      japanScene.classList.add("show");
+
+      setTimeout(() => {
+        finalLine.style.opacity = 1;
+      }, 1500);
+
+    }, 1200);
+
+  }, 1200);
+};
+
+</script>
+</body>
+</html>
